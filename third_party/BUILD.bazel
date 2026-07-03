@@ -16,40 +16,13 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 package(default_visibility = ["//visibility:public"])
 
-cc_library(
-    name = "darts_clone",
-    hdrs = ["darts_clone/darts.h"],
-)
-
+# The vendored darts_clone/ and protobuf-lite/ copies are only used by the
+# CMake build. The Bazel build takes darts-clone and protobuf from the Bazel
+# Central Registry instead (see //bazel:darts_clone and //src:pb).
 cc_library(
     name = "esaxx",
     hdrs = [
         "esaxx/esa.hxx",
         "esaxx/sais.hxx",
     ],
-)
-
-# Vendored protobuf-lite runtime, used by the pre-generated
-# src/builtin_pb/*.pb.cc files (SPM_PROTOBUF_PROVIDER=internal in CMake).
-cc_library(
-    name = "protobuf_lite",
-    srcs = glob(["protobuf-lite/*.cc"]),
-    hdrs = glob([
-        "protobuf-lite/google/protobuf/**/*.h",
-        "protobuf-lite/google/protobuf/**/*.inc",
-    ]),
-    copts = select({
-        "@platforms//os:windows": [],
-        "//conditions:default": [
-            "-pthread",
-            "-Wno-sign-compare",
-            "-Wno-deprecated-declarations",
-        ],
-    }),
-    defines = ["HAVE_PTHREAD=1"],
-    includes = ["protobuf-lite"],
-    linkopts = select({
-        "@platforms//os:windows": [],
-        "//conditions:default": ["-pthread"],
-    }),
 )

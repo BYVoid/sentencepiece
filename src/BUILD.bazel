@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.!
 
+load("@protobuf//bazel:cc_proto_library.bzl", "cc_proto_library")
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
 
 package(default_visibility = ["//visibility:public"])
@@ -43,25 +45,42 @@ cc_library(
     includes = ["."],
 )
 
-# Pre-generated protobuf sources (SPM_PROTOBUF_PROVIDER=internal in CMake).
+# The protobuf code is regenerated from the .proto files at build time with
+# the protobuf module from the Bazel Central Registry, matching the
+# SPM_PROTOBUF_PROVIDER=package CMake configuration. The pre-generated
+# sources in builtin_pb/ and the vendored third_party/protobuf-lite runtime
+# are only used by CMake (SPM_PROTOBUF_PROVIDER=internal, its default).
+proto_library(
+    name = "sentencepiece_proto",
+    srcs = ["sentencepiece.proto"],
+)
+
+cc_proto_library(
+    name = "sentencepiece_cc_proto",
+    deps = [":sentencepiece_proto"],
+)
+
+proto_library(
+    name = "sentencepiece_model_proto",
+    srcs = ["sentencepiece_model.proto"],
+)
+
+cc_proto_library(
+    name = "sentencepiece_model_cc_proto",
+    deps = [":sentencepiece_model_proto"],
+)
+
+# Wrapper that puts the generated headers on the include path expected by
+# the sources (#include "sentencepiece.pb.h") and selects the external
+# protobuf branch of the #ifdef _USE_EXTERNAL_PROTOBUF includes.
 cc_library(
-    name = "builtin_pb",
-    srcs = [
-        "builtin_pb/sentencepiece.pb.cc",
-        "builtin_pb/sentencepiece_model.pb.cc",
+    name = "pb",
+    defines = ["_USE_EXTERNAL_PROTOBUF"],
+    includes = ["."],
+    deps = [
+        ":sentencepiece_cc_proto",
+        ":sentencepiece_model_cc_proto",
     ],
-    hdrs = [
-        "builtin_pb/sentencepiece.pb.h",
-        "builtin_pb/sentencepiece_model.pb.h",
-    ],
-    copts = select({
-        "@platforms//os:windows": [],
-        "//conditions:default": NOT_WIN_COPTS + [
-            "-Wno-misleading-indentation",
-        ],
-    }),
-    includes = ["builtin_pb"],
-    deps = ["//third_party:protobuf_lite"],
 )
 
 # Runtime library (the `sentencepiece` target in CMake; SPM_SRCS).
@@ -105,11 +124,10 @@ cc_library(
         "//conditions:default": [],
     }),
     deps = [
-        ":builtin_pb",
         ":config",
+        ":pb",
         "//bazel:absl",
-        "//third_party:darts_clone",
-        "//third_party:protobuf_lite",
+        "//bazel:darts_clone",
     ],
 )
 
