@@ -11,7 +11,7 @@ pre-generated protobuf sources in `src/builtin_pb`
 
 ## Prerequisites
 
-- Bazel 7.0 or later (bzlmod is used; installing via
+- Bazel 7.1 or later (bzlmod is used; installing via
   [Bazelisk](https://github.com/bazelbuild/bazelisk) is recommended)
 - A C++17 compiler
 
@@ -60,8 +60,9 @@ bazel test //src:spm_test
 - The SentencePiece sources include Abseil headers with a
   `third_party/absl/...` prefix. CMake satisfies these includes by symlinking
   `third_party/absl` to the abseil-cpp checkout; the Bazel build instead
-  forwards them to the `abseil-cpp` module through the shim headers in
-  `bazel/absl_shims/`.
+  forwards them to the `abseil-cpp` module through forwarding headers that
+  the repository rule in `bazel/absl_compat.bzl` generates at fetch time
+  (the `@absl_include_compat` repository). No Abseil code is vendored.
 - To use SentencePiece as a dependency in another Bazel module:
 
   ```starlark

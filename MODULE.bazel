@@ -25,3 +25,10 @@ bazel_dep(
 )
 bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_cc", version = "0.2.18")
+
+# Generates the forwarding headers that map the "third_party/absl/..."
+# include paths used by the sources to the abseil-cpp module (see
+# bazel/absl_compat.bzl).
+absl_include_compat = use_repo_rule("//bazel:absl_compat.bzl", "absl_include_compat")
+
+absl_include_compat(name = "absl_include_compat")
