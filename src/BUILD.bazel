@@ -127,7 +127,7 @@ cc_library(
         ":config",
         ":pb",
         "//bazel:absl",
-        "//bazel:darts_clone",
+        "@darts-clone//:darts-clone",
     ],
 )
 
@@ -168,7 +168,7 @@ cc_library(
     deps = [
         ":sentencepiece",
         "//bazel:absl",
-        "//bazel:esaxx",
+        "@esaxx//:esa",
     ],
 )
 

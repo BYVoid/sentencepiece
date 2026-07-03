@@ -70,13 +70,12 @@ bazel test //src:spm_test
 - The optional CMake features `SPM_ENABLE_NFKC_COMPILE` (ICU),
   `SPM_ENABLE_TCMALLOC`, `SPM_ENABLE_BENCHMARK`, and `SPM_NLCODEC_BPE` have no
   Bazel equivalent yet.
-- The SentencePiece sources include third-party headers with paths such as
-  `third_party/absl/...` and `darts_clone/darts.h`. CMake satisfies these
-  includes with checkouts or vendored copies under `third_party/`; the Bazel
-  build instead forwards them to the Bazel Central Registry modules through
-  forwarding headers that the repository rule in `bazel/include_compat.bzl`
-  generates at fetch time (the `@include_compat` repository). No third-party
-  code is vendored into the Bazel build.
+- The SentencePiece sources include third-party headers with the standard
+  paths the upstream projects export (`absl/...`, `darts.h`, `esa.hxx`), so
+  Bazel resolves them directly against the Bazel Central Registry modules.
+  CMake resolves the same includes against the abseil-cpp checkout and the
+  vendored copies under `third_party/`. No third-party code is vendored into
+  the Bazel build.
 - To use SentencePiece as a dependency in another Bazel module:
 
   ```starlark

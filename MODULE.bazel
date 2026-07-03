@@ -18,19 +18,11 @@ module(
 )
 
 # Keep in sync with the abseil-cpp GIT_TAG in CMakeLists.txt.
-bazel_dep(
-    name = "abseil-cpp",
-    version = "20260526.0",
-    repo_name = "com_google_absl",
-)
+bazel_dep(name = "abseil-cpp", version = "20260526.0")
 
 # Upstream darts-clone v0.32h plus the compatibility helpers (copy_array,
 # validate, ...) that the vendored third_party/darts_clone copy carries.
-bazel_dep(
-    name = "darts-clone",
-    version = "0.32h.bcr.1",
-    repo_name = "darts_clone",
-)
+bazel_dep(name = "darts-clone", version = "0.32h.bcr.1")
 
 # Upstream esaxx at the commit the vendored third_party/esaxx copy is based
 # on. The module needs two local patches (see below).
@@ -55,10 +47,3 @@ single_version_override(
     ],
     version = "20250106.1",
 )
-
-# Generates the forwarding headers that map the "third_party/..." include
-# paths used by the sources to the modules above (see
-# bazel/include_compat.bzl).
-include_compat = use_repo_rule("//bazel:include_compat.bzl", "include_compat")
-
-include_compat(name = "include_compat")
