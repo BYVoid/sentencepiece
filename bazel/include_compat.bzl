@@ -82,6 +82,8 @@ _FORWARDED_HEADERS = {
     # includer-directory lookup. The angle form only searches the include
     # path, where the darts-clone module exposes the real header.
     "darts_clone/darts.h": "<darts.h>",
+    # Same prefix-free path and angle-include reasoning as darts_clone/.
+    "esaxx/esa.hxx": "<esa.hxx>",
 }
 
 _HEADER_TEMPLATE = """\

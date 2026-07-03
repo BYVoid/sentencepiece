@@ -72,3 +72,15 @@ cc_library(
         "@include_compat//:headers",
     ],
 )
+
+# Upstream esaxx from the Bazel Central Registry (with the local patches
+# from //bazel/patches applied via MODULE.bazel), reachable through the
+# "esaxx/esa.hxx" include path used by the sources. The vendored copy under
+# third_party/esaxx is only used by CMake.
+cc_library(
+    name = "esaxx",
+    deps = [
+        "@esaxx//:esa",
+        "@include_compat//:headers",
+    ],
+)

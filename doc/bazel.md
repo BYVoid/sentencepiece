@@ -12,14 +12,19 @@ through the [Bazel Central Registry](https://registry.bazel.build):
   vendored protobuf-lite runtime instead);
 - [darts-clone](https://github.com/s-yata/darts-clone), as the
   `0.32h.bcr.1` module that carries the compatibility helpers of the
-  vendored copy.
+  vendored copy;
+- [esaxx](https://github.com/hillbig/esaxx), with two local patches from
+  `bazel/patches/` applied through `single_version_override()`: the module's
+  BUILD file only exports `sais.hxx`, and its packaged source needs the
+  template-deduction fix from the vendored copy for the `int64_t`
+  instantiation used by `--train_extremely_large_corpus`.
 
-The vendored `third_party/darts_clone`, `third_party/protobuf-lite`, and
-`src/builtin_pb` sources are only used by CMake.
+The vendored sources under `third_party/` and the pre-generated protobuf
+code in `src/builtin_pb` are only used by CMake.
 
 ## Prerequisites
 
-- Bazel 7.1 or later (bzlmod is used; installing via
+- Bazel 7.2.1 or later (bzlmod is used; installing via
   [Bazelisk](https://github.com/bazelbuild/bazelisk) is recommended)
 - A C++17 compiler
 

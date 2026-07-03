@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.!
 
-load("@rules_cc//cc:defs.bzl", "cc_library")
-
-package(default_visibility = ["//visibility:public"])
-
-# The vendored darts_clone/ and protobuf-lite/ copies are only used by the
-# CMake build. The Bazel build takes darts-clone and protobuf from the Bazel
-# Central Registry instead (see //bazel:darts_clone and //src:pb).
-cc_library(
-    name = "esaxx",
-    hdrs = [
-        "esaxx/esa.hxx",
-        "esaxx/sais.hxx",
-    ],
-)
+# Patches applied to Bazel Central Registry modules through the
+# single_version_override() declarations in MODULE.bazel.
+exports_files([
+    "esaxx_add_esa_target.patch",
+    "esaxx_fix_index_type_deduction.patch",
+])

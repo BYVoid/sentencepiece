@@ -168,7 +168,7 @@ cc_library(
     deps = [
         ":sentencepiece",
         "//bazel:absl",
-        "//third_party:esaxx",
+        "//bazel:esaxx",
     ],
 )
 
