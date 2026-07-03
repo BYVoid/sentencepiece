@@ -24,7 +24,7 @@
 #include "third_party/absl/base/internal/endian.h"
 #include "third_party/absl/status/status.h"
 #include "third_party/absl/strings/string_view.h"
-#include "third_party/darts_clone/darts.h"
+#include "darts_clone/darts.h"
 #include "sentencepiece_model.pb.h"
 #include "sentencepiece_processor.h"
 #include "util.h"

@@ -23,7 +23,7 @@
 #include "testharness.h"
 #include "third_party/absl/status/status.h"
 #include "third_party/absl/strings/string_view.h"
-#include "third_party/darts_clone/darts.h"
+#include "darts_clone/darts.h"
 #include "util.h"
 
 namespace sentencepiece {

@@ -34,7 +34,7 @@
 #include "third_party/absl/strings/str_replace.h"
 #include "third_party/absl/strings/str_split.h"
 #include "third_party/absl/strings/string_view.h"
-#include "third_party/esaxx/esa.hxx"  // Suffix array library.
+#include "esaxx/esa.hxx"  // Suffix array library.
 #include "trainer_interface.h"
 #include "unicode_script.h"
 #include "util.h"

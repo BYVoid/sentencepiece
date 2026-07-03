@@ -1,17 +1,30 @@
 # Building SentencePiece with Bazel
 
 In addition to the [CMake build](cli.md), SentencePiece can be built with
-[Bazel](https://bazel.build). The Bazel build mirrors the default CMake
-configuration: it uses the vendored protobuf-lite runtime and the
-pre-generated protobuf sources in `src/builtin_pb`
-(`SPM_PROTOBUF_PROVIDER=internal`), and fetches
-[abseil-cpp](https://github.com/abseil/abseil-cpp) at the same version as the
-`GIT_TAG` pinned in `CMakeLists.txt`, resolved through the
-[Bazel Central Registry](https://registry.bazel.build).
+[Bazel](https://bazel.build). All third-party dependencies are resolved
+through the [Bazel Central Registry](https://registry.bazel.build):
+
+- [abseil-cpp](https://github.com/abseil/abseil-cpp), at the same version as
+  the `GIT_TAG` pinned in `CMakeLists.txt`;
+- [protobuf](https://github.com/protocolbuffers/protobuf): the protobuf code
+  is regenerated from `src/*.proto` at build time, matching the
+  `SPM_PROTOBUF_PROVIDER=package` CMake configuration (CMake defaults to the
+  vendored protobuf-lite runtime instead);
+- [darts-clone](https://github.com/s-yata/darts-clone), as the
+  `0.32h.bcr.1` module that carries the compatibility helpers of the
+  vendored copy;
+- [esaxx](https://github.com/hillbig/esaxx), with two local patches from
+  `bazel/patches/` applied through `single_version_override()`: the module's
+  BUILD file only exports `sais.hxx`, and its packaged source needs the
+  template-deduction fix from the vendored copy for the `int64_t`
+  instantiation used by `--train_extremely_large_corpus`.
+
+The vendored sources under `third_party/` and the pre-generated protobuf
+code in `src/builtin_pb` are only used by CMake.
 
 ## Prerequisites
 
-- Bazel 7.1 or later (bzlmod is used; installing via
+- Bazel 7.2.1 or later (bzlmod is used; installing via
   [Bazelisk](https://github.com/bazelbuild/bazelisk) is recommended)
 - A C++17 compiler
 
@@ -57,12 +70,13 @@ bazel test //src:spm_test
 - The optional CMake features `SPM_ENABLE_NFKC_COMPILE` (ICU),
   `SPM_ENABLE_TCMALLOC`, `SPM_ENABLE_BENCHMARK`, and `SPM_NLCODEC_BPE` have no
   Bazel equivalent yet.
-- The SentencePiece sources include Abseil headers with a
-  `third_party/absl/...` prefix. CMake satisfies these includes by symlinking
-  `third_party/absl` to the abseil-cpp checkout; the Bazel build instead
-  forwards them to the `abseil-cpp` module through forwarding headers that
-  the repository rule in `bazel/absl_compat.bzl` generates at fetch time
-  (the `@absl_include_compat` repository). No Abseil code is vendored.
+- The SentencePiece sources include third-party headers with paths such as
+  `third_party/absl/...` and `darts_clone/darts.h`. CMake satisfies these
+  includes with checkouts or vendored copies under `third_party/`; the Bazel
+  build instead forwards them to the Bazel Central Registry modules through
+  forwarding headers that the repository rule in `bazel/include_compat.bzl`
+  generates at fetch time (the `@include_compat` repository). No third-party
+  code is vendored into the Bazel build.
 - To use SentencePiece as a dependency in another Bazel module:
 
   ```starlark
