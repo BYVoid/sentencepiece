@@ -26,10 +26,12 @@ package(default_visibility = ["//visibility:public"])
 # the header-only Abseil libraries the sources include directly.
 cc_library(
     name = "absl",
+    # //absl/base:endian (for base/internal/endian.h, used by src/util.h) is
+    # intentionally absent: it is not publicly visible. Its header still
+    # reaches dependents through the transitive headers of //absl/strings.
     deps = [
         "@absl_include_compat//:headers",
         "@com_google_absl//absl/base:core_headers",
-        "@com_google_absl//absl/base:endian",
         "@com_google_absl//absl/cleanup",
         "@com_google_absl//absl/container:btree",
         "@com_google_absl//absl/container:fixed_array",
