@@ -13,11 +13,10 @@ through the [Bazel Central Registry](https://registry.bazel.build):
 - [darts-clone](https://github.com/s-yata/darts-clone), as the
   `0.32h.bcr.1` module that carries the compatibility helpers of the
   vendored copy;
-- [esaxx](https://github.com/hillbig/esaxx), with two local patches from
-  `bazel/patches/` applied through `single_version_override()`: the module's
-  BUILD file only exports `sais.hxx`, and its packaged source needs the
-  template-deduction fix from the vendored copy for the `int64_t`
-  instantiation used by `--train_extremely_large_corpus`.
+- [esaxx](https://github.com/hillbig/esaxx), as the `20250106.1.bcr.1`
+  module, which exports `esa.hxx` and carries the template-deduction fix
+  the vendored copy has for the `int64_t` instantiation used by
+  `--train_extremely_large_corpus`.
 
 The vendored sources under `third_party/` and the pre-generated protobuf
 code in `src/builtin_pb` are only used by CMake.

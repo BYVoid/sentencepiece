@@ -25,8 +25,9 @@ bazel_dep(name = "abseil-cpp", version = "20260526.0")
 bazel_dep(name = "darts-clone", version = "0.32h.bcr.1")
 
 # Upstream esaxx at the commit the vendored third_party/esaxx copy is based
-# on. The module needs two local patches (see below).
-bazel_dep(name = "esaxx", version = "20250106.1")
+# on. The .bcr.1 revision exports esa.hxx and carries the index_type(0)
+# template-deduction fix that the int64_t instantiation of esaxx() needs.
+bazel_dep(name = "esaxx", version = "20250106.1.bcr.1")
 bazel_dep(name = "platforms", version = "1.1.0")
 
 # The .pb.cc/.pb.h files are regenerated from src/*.proto at build time, so
@@ -34,16 +35,3 @@ bazel_dep(name = "platforms", version = "1.1.0")
 # configuration instead of the vendored third_party/protobuf-lite runtime.
 bazel_dep(name = "protobuf", version = "35.1")
 bazel_dep(name = "rules_cc", version = "0.2.18")
-
-# The esaxx module only exports sais.hxx (:sais), and its packaged source
-# lacks the template-deduction fix that the int64_t instantiation of esaxx()
-# requires, so patch in the :esa target and the fix from the vendored copy.
-single_version_override(
-    module_name = "esaxx",
-    patch_strip = 0,
-    patches = [
-        "//bazel/patches:esaxx_add_esa_target.patch",
-        "//bazel/patches:esaxx_fix_index_type_deduction.patch",
-    ],
-    version = "20250106.1",
-)
