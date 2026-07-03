@@ -123,10 +123,38 @@ cc_library(
         "@platforms//cpu:riscv64": ["-latomic"],
         "//conditions:default": [],
     }),
+    # @abseil-cpp//absl/base:endian (for base/internal/endian.h, used by
+    # util.h) is intentionally absent: it is not publicly visible. Its header
+    # still reaches dependents through the transitive headers of
+    # @abseil-cpp//absl/strings.
     deps = [
         ":config",
         ":pb",
-        "//bazel:absl",
+        "@abseil-cpp//absl/base:core_headers",
+        "@abseil-cpp//absl/cleanup",
+        "@abseil-cpp//absl/container:fixed_array",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/container:flat_hash_set",
+        "@abseil-cpp//absl/flags:config",
+        "@abseil-cpp//absl/flags:flag",
+        "@abseil-cpp//absl/flags:parse",
+        "@abseil-cpp//absl/flags:usage",
+        "@abseil-cpp//absl/functional:any_invocable",
+        "@abseil-cpp//absl/functional:function_ref",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/log:globals",
+        "@abseil-cpp//absl/log:initialize",
+        "@abseil-cpp//absl/numeric:bits",
+        "@abseil-cpp//absl/random",
+        "@abseil-cpp//absl/status",
+        "@abseil-cpp//absl/status:status_builder",
+        "@abseil-cpp//absl/status:status_macros",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/strings:str_format",
+        "@abseil-cpp//absl/synchronization",
+        "@abseil-cpp//absl/time",
+        "@abseil-cpp//absl/types:span",
         "@darts-clone//:darts-clone",
     ],
 )
@@ -167,7 +195,17 @@ cc_library(
     }),
     deps = [
         ":sentencepiece",
-        "//bazel:absl",
+        "@abseil-cpp//absl/container:btree",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/container:flat_hash_set",
+        "@abseil-cpp//absl/flags:flag",
+        "@abseil-cpp//absl/hash",
+        "@abseil-cpp//absl/random",
+        "@abseil-cpp//absl/status",
+        "@abseil-cpp//absl/status:status_builder",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/strings:str_format",
+        "@abseil-cpp//absl/types:span",
         "@esaxx//:esa",
     ],
 )
@@ -179,7 +217,9 @@ cc_binary(
         ":sentencepiece",
         # For trainer_interface.h.
         ":sentencepiece_train",
-        "//bazel:absl",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/flags:flag",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -188,7 +228,8 @@ cc_binary(
     srcs = ["spm_decode_main.cc"],
     deps = [
         ":sentencepiece",
-        "//bazel:absl",
+        "@abseil-cpp//absl/flags:flag",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -198,7 +239,7 @@ cc_binary(
     deps = [
         ":sentencepiece",
         ":sentencepiece_train",
-        "//bazel:absl",
+        "@abseil-cpp//absl/flags:flag",
     ],
 )
 
@@ -208,7 +249,8 @@ cc_binary(
     deps = [
         ":sentencepiece",
         ":sentencepiece_train",
-        "//bazel:absl",
+        "@abseil-cpp//absl/flags:flag",
+        "@abseil-cpp//absl/strings",
     ],
 )
 
@@ -217,7 +259,7 @@ cc_binary(
     srcs = ["spm_export_vocab_main.cc"],
     deps = [
         ":sentencepiece",
-        "//bazel:absl",
+        "@abseil-cpp//absl/flags:flag",
     ],
 )
 
@@ -267,6 +309,12 @@ cc_test(
     deps = [
         ":sentencepiece",
         ":sentencepiece_train",
-        "//bazel:absl",
+        "@abseil-cpp//absl/container:flat_hash_map",
+        "@abseil-cpp//absl/log",
+        "@abseil-cpp//absl/log:check",
+        "@abseil-cpp//absl/status",
+        "@abseil-cpp//absl/strings",
+        "@abseil-cpp//absl/strings:str_format",
+        "@abseil-cpp//absl/time",
     ],
 )
