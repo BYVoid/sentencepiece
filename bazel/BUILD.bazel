@@ -63,8 +63,8 @@ cc_library(
 )
 
 # Upstream darts-clone from the Bazel Central Registry, reachable through
-# the "third_party/darts_clone/darts.h" include path used by the sources.
-# The vendored copy under third_party/darts_clone is only used by CMake.
+# the "darts_clone/darts.h" include path used by the sources. The vendored
+# copy under third_party/darts_clone is only used by CMake.
 cc_library(
     name = "darts_clone",
     deps = [

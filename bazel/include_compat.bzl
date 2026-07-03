@@ -70,11 +70,18 @@ _FORWARDED_HEADERS = {
     "third_party/absl/time/clock.h": "absl/time/clock.h",
     "third_party/absl/time/time.h": "absl/time/time.h",
     "third_party/absl/types/span.h": "absl/types/span.h",
+    # The sources include this as "darts_clone/darts.h" (without the
+    # third_party/ prefix): the path must not collide with the vendored
+    # third_party/darts_clone/darts.h file, which would otherwise shadow this
+    # forwarding header on platforms that build without sandboxing (Windows).
+    # CMake resolves the same include against the vendored copy through its
+    # third_party include directory.
+    #
     # Angle brackets are required here: the forwarding header is itself named
     # darts.h, so a quoted include would resolve to itself through the
     # includer-directory lookup. The angle form only searches the include
     # path, where the darts-clone module exposes the real header.
-    "third_party/darts_clone/darts.h": "<darts.h>",
+    "darts_clone/darts.h": "<darts.h>",
 }
 
 _HEADER_TEMPLATE = """\

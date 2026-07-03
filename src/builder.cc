@@ -41,7 +41,7 @@
 #include <set>
 
 #include "normalizer.h"
-#include "third_party/darts_clone/darts.h"
+#include "darts_clone/darts.h"
 #include "util.h"
 
 #ifndef DISABLE_EMBEDDED_DATA
