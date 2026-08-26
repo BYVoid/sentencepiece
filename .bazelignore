@@ -1,8 +1,12 @@
-# Directories populated by the CMake build (FetchContent checkouts and the
-# third_party/absl symlink) contain their own BUILD files and must not be
-# treated as packages of this workspace.
+# Directories populated by CMake or Python builds
+# Note: Bazel's .bazelignore does NOT support wildcards/globs (*).
+build
+build_amd64
+build_arm64
+build_x64
+build_root
 third_party/abseil-cpp
 third_party/absl
 third_party/benchmark
-build
+third_party/protobuf
 python

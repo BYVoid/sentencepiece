@@ -19,11 +19,9 @@
 #include <string>
 #include <vector>
 
-#include "common.h"
-#include "sentencepiece_model.pb.h"
-#include "sentencepiece_processor.h"
 #include "absl/status/status.h"
 #include "absl/strings/string_view.h"
+#include "gtest_prod.h"
 
 namespace sentencepiece::normalizer {
 

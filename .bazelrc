@@ -1,10 +1,18 @@
-# SentencePiece requires C++17.
-build --enable_platform_specific_config
+# Common C++ settings
+build --cxxopt=-std=c++17
 
-build:linux --cxxopt=-std=c++17 --host_cxxopt=-std=c++17
-build:macos --cxxopt=-std=c++17 --host_cxxopt=-std=c++17
-build:freebsd --cxxopt=-std=c++17 --host_cxxopt=-std=c++17
-build:windows --cxxopt=/std:c++17 --host_cxxopt=/std:c++17
-build:windows --cxxopt=/utf-8 --host_cxxopt=/utf-8
+# Linux / GCC / Clang
+build:linux --copt=-Wall
+build:linux --copt=-Wno-deprecated-declarations
 
-test --test_output=errors
+# macOS / Clang
+build:macos --copt=-Wall
+build:macos --copt=-Wno-deprecated-declarations
+
+# Windows MSVC settings
+build:windows --copt=/utf-8
+build:windows --copt=/DNOMINMAX
+build:windows --copt=/wd4267
+build:windows --copt=/wd4244
+build:windows --copt=/wd4305
+build:windows --copt=/wd4996
